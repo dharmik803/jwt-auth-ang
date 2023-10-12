@@ -1,4 +1,5 @@
 import { Component } from '@angular/core';
+import { LocalstorageService } from './services/localstorage.service';
 
 @Component({
   selector: 'app-root',
@@ -7,4 +8,10 @@ import { Component } from '@angular/core';
 })
 export class AppComponent {
   title = 'jwt-auth-ang';
+
+  constructor(private localServ: LocalstorageService) {}
+
+  onLogOut(){
+    this.localServ.remove('token');
+  }
 }

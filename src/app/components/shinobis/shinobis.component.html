@@ -1,0 +1,196 @@
+<div class="container" *ngIf="!isNoData;else noDataTemplate">
+
+    <h2 class="text-center my-5">Shinobi Informations</h2>
+    <div class="d-flex justify-content-end">
+        <button type="button" 
+        class="btn btn-success mb-2"
+        data-bs-toggle="modal" 
+        data-bs-target="#Modal"
+        (click)="onAddClick()"
+        >
+            Add Shinobi
+        </button>
+    </div>
+    <div class="table-container">
+    <table class="tbl">
+        <tr class="tr-head sticky-top">
+            <th>Id</th>
+            <th>Name</th>
+            <th>Age</th>
+            <th>Rank Level</th>
+            <th>Village</th>
+            <th>Actions</th>
+        </tr>
+        <tr class="tr-data" *ngFor="let item of shinobiList">
+            <td>
+                {{item.id}}
+            </td>
+            <td>
+                {{item.name}}
+            </td>
+            <td>
+                {{item.age}}
+            </td>
+            <td>
+                {{item.rankLevel}}
+            </td>
+            <td>
+                {{item.village}}
+            </td>
+            <td>
+                <button type="button" 
+                    data-bs-toggle="modal" 
+                    data-bs-target="#Modal" 
+                    (click)="onEditClick(item.id)" 
+                    class="btn btn-sm btn-outline-info">
+                        Edit
+                </button>
+                <button type="button" 
+                    (click)="onDeleteClick(item.id)" 
+                    class="btn btn-sm btn-outline-danger" 
+                    style="margin-left: 8px;"
+                    data-bs-toggle="modal" 
+                    data-bs-target="#deleteModal">
+                        Delete
+                </button>
+            </td>
+        </tr>
+    </table>
+</div>
+</div>
+
+<ng-template #noDataTemplate>
+    <div>
+        <h1 class="text-center">
+            No Data
+        </h1>
+    </div>
+</ng-template>
+
+
+
+<!-- Modal code from here -->
+
+  <!-- Modal -->
+  <div class="modal fade" id="Modal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h1 class="modal-title fs-5" id="exampleModalLabel">Fill the Details</h1>
+        </div>
+        <div class="modal-body">
+          <!-- Form from here -->
+
+          <form [formGroup]="shinobiForm">
+          
+            <div class="row form-group">
+                <div class="col-3 p-1">  
+                    <label class="form-label" for="name">Name:</label>
+                </div>
+                <div class="col-9">
+                    <input class="form-control" type="text" id="name" formControlName="name">
+                    <div *ngIf="vName?.invalid && (vName?.dirty || vName?.touched)">
+                        <div *ngIf="vName?.errors?.['required']">
+                            <small class="text-danger">*Name is required.</small>
+                        </div>
+                        <div *ngIf="vName?.errors?.['pattern']">
+                            <small class="text-danger">Only Alphabets allowed.</small>
+                        </div>
+                    </div>
+                </div>  
+                
+            </div>
+          
+            <div class="row form-group">
+                <div class="col-3 p-1">
+                    <label class="form-label" for="age">Age:</label>
+                </div>
+                <div class="col-9">
+                    <input class="form-control" type="number" id="age" formControlName="age">
+                    <div *ngIf="vAge?.invalid && (vAge?.dirty || vAge?.touched)">
+                        <div *ngIf="vAge?.errors?.['required']">
+                            <small class="text-danger">*Age is required.</small>
+                        </div>
+                        <div *ngIf="vAge?.errors?.['pattern']">
+                            <small class="text-danger">*Invalid Age.</small>
+                        </div>
+                    </div>
+                </div>
+            </div>
+          
+            <div class="row form-group">
+                <div class="col-3 p-1">
+                    <label class="form-label" for="rankLevel">Rank Level:</label>
+                </div>
+                <div class="col-9">
+                    <input class="form-control" type="text" id="rankLevel" formControlName="rankLevel">
+                    <div *ngIf="vRankLevel?.invalid && (vRankLevel?.dirty || vRankLevel?.touched)">
+                        <div *ngIf="vRankLevel?.errors?.['required']">
+                            <small class="text-danger">*Rank Level is required.</small>
+                        </div>
+                        <div *ngIf="vRankLevel?.errors?.['pattern']">
+                            <small class="text-danger">*Invalid Pattern.</small>
+                        </div>
+                    </div>
+                </div>
+            </div>
+          
+            <div class="row form-group">
+                <div class="col-3 p-1">
+                    <label class="form-label" for="village">Village:</label>
+                </div>
+                <div class="col-9">
+                    <input class="form-control" type="text" id="village" formControlName="village">
+                    <div *ngIf="vVillage?.invalid && (vVillage?.dirty || vVillage?.touched)">
+                        <div *ngIf="vVillage?.errors?.['required']">
+                            <small class="text-danger">*Village is required.</small>
+                        </div>
+                        <div *ngIf="vVillage?.errors?.['pattern']">
+                            <small class="text-danger">*Invalid Pattern.</small>
+                        </div>
+                    </div>
+                </div>
+            </div>
+          </form>
+          
+
+          <!-- Form End -->
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-outline-danger" data-bs-dismiss="modal">Close</button>
+          <button type="button" 
+                [disabled]="!shinobiForm.valid" 
+                (click)="onSaveShinobi(shinobiForm.value)" 
+                class="btn btn-outline-success"
+                data-bs-dismiss="modal"
+            >
+                Save changes
+            </button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+
+
+  <!-- Modal for delete Confirmation -->
+  <!-- Modal -->
+  <div class="modal fade" id="deleteModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered" style="width: 350px !important;">
+      <div class="modal-content">
+        <div class="modal-body">
+          <h3 class="text-center">Sure Want to Delete?</h3>
+        </div>
+        <div class="modal-footer" style="justify-content: center !important;">
+          <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+          <button type="button" 
+                  class="btn btn-danger" 
+                  data-bs-dismiss="modal"
+                  (click)="onDeleteShinobi()"
+                  >
+                Confirm
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>

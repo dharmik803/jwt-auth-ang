@@ -1,0 +1,21 @@
+#intro {
+    background-image: url('src/assets/image.jpeg');
+    height: 100vh;
+    background-repeat: no-repeat;
+    background-size: 100%;
+  }
+
+  /* Height for devices larger than 576px */
+  @media (min-width: 992px) {
+    #intro {
+      margin-top: -58.59px;
+    }
+  }
+
+  .navbar .nav-link {
+    color: #fff !important;
+  }
+
+  .modal-msg{
+    font-size: larger;
+  }

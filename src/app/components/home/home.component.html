@@ -1,0 +1,131 @@
+<!-- Background image -->
+<div id="intro" class="bg-image shadow-2-strong">
+  <div
+    class="mask d-flex align-items-center h-100"
+    style="background-color: rgba(0, 0, 0, 0.8)"
+  >
+    <div class="container">
+      <div class="row justify-content-center">
+        <div class="col-xl-5 col-md-8">
+          <form
+            class="bg-white rounded-5 shadow-5-strong p-4"
+            [formGroup]="userForm"
+            (ngSubmit)="onLogin()"
+          >
+            <h3 class="text-success text-center mb-4">Login</h3>
+            <!-- Username input -->
+            <div class="form-outline row">
+              <div class="col-3 p-1">
+                <label class="form-label" for="username">Username</label>
+              </div>
+              <div class="col-9">
+                <input
+                  type="text"
+                  class="form-control"
+                  formControlName="username"
+                />
+              </div>
+            </div>
+            <div
+              class="row"
+              *ngIf="
+                vusername?.invalid && (vusername?.dirty || vusername?.touched)
+              "
+            >
+              <div class="col-3"></div>
+              <div
+                *ngIf="vusername?.errors?.['required']"
+                class="text-danger col-9"
+              >
+                <small>Username is required.</small>
+              </div>
+            </div>
+
+            <!-- Password input -->
+            <div class="form-outline row mt-4">
+              <div class="col-3 p-1">
+                <label class="form-label" for="password">Password</label>
+              </div>
+              <div class="col-9">
+                <input
+                  type="password"
+                  id="password"
+                  class="form-control"
+                  formControlName="password"
+                />
+              </div>
+            </div>
+            <div
+              class="row"
+              *ngIf="
+                vpassword?.invalid && (vpassword?.dirty || vpassword?.touched)
+              "
+            >
+              <div class="col-3"></div>
+              <div
+                *ngIf="vpassword?.errors?.['required']"
+                class="text-danger col-9"
+              >
+                <small>Password is required.</small>
+              </div>
+            </div>
+
+            <!-- Submit button -->
+            <div class="text-center mt-3">
+              <button
+                type="submit"
+                [disabled]="!userForm.valid"
+                class="btn btn-primary btn-block"
+              >
+                Log in
+              </button>
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+<!-- Background image -->
+
+<!-- Modal  -->
+<!-- Button trigger modal -->
+<button
+  type="button"
+  class="btn btn-primary"
+  data-bs-toggle="modal"
+  data-bs-target="#exampleModal"
+  id="modalBtn"
+  style="display: none"
+>
+  Launch demo modal
+</button>
+
+<!-- Modal -->
+<div
+  class="modal fade"
+  id="exampleModal"
+  tabindex="-1"
+  aria-labelledby="exampleModalLabel"
+  aria-hidden="true"
+>
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button
+          type="button"
+          class="btn-close"
+          id="modalCloseBtn"
+          data-bs-dismiss="modal"
+          aria-label="Close"
+        ></button>
+      </div>
+      <div class="modal-body text-success text-center modal-msg" *ngIf="isLoggedin">
+        Logged in Successfully!
+      </div>
+      <div class="modal-body text-success text-center modal-msg" *ngIf="!isLoggedin">
+        Username or Password is invalid!
+      </div>
+    </div>
+  </div>
+</div>
