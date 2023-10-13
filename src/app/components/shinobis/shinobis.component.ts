@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { FormGroup, FormBuilder, Validators } from '@angular/forms';
+import { Observable } from 'rxjs';
 import { Shinobi } from 'src/app/models/shinobi.model';
 import { LocalstorageService } from 'src/app/services/localstorage.service';
 import { ShinobiService } from 'src/app/services/shinobi.service';
@@ -18,6 +19,7 @@ export class ShinobisComponent implements OnInit{
     
   }
 
+  //shinobiList!: Observable<Shinobi[]>;
   shinobiList!: Shinobi[];
   shinobiForm!: FormGroup;
   formData!: Shinobi;
@@ -31,10 +33,10 @@ export class ShinobisComponent implements OnInit{
 
     this.shinobiForm = this.fb.group({
       id: [null],
-      name: ['', [Validators.required, Validators.pattern('^[a-zA-Z]+$')]],
+      name: ['', [Validators.required, Validators.pattern('^[A-Z][a-z]*( [A-Z][a-z]*)?$')]],
       age: [null, [Validators.required, Validators.pattern('^(0?[1-9]|[1-9][0-9]|100)$')]],
-      rankLevel: ['', [Validators.required, Validators.pattern('^[a-zA-Z]+$')]],
-      village: ['', [Validators.required, Validators.pattern('^[a-zA-Z]+$')]],
+      rankLevel: ['', [Validators.required, Validators.pattern('^[A-Za-z ]+$')]],
+      village: ['', [Validators.required, Validators.pattern('^[A-Za-z ]+$')]],
     });
 
     
@@ -47,6 +49,8 @@ export class ShinobisComponent implements OnInit{
 
 
   onLoadGetShinobis(){
+
+    // this.shinobiList = this.shinobiService.GetShinobi();
     this.shinobiService.GetShinobi().subscribe(
       (data) => {
         this.shinobiList = data;
@@ -70,8 +74,12 @@ export class ShinobisComponent implements OnInit{
 
   onEditClick(id: number){
     if(id){
-      this.formData = this.shinobiList.find((data) => data.id === id) as Shinobi;
+      // this.shinobiList.subscribe(shinobiData => {
+      //   this.formData = shinobiData.find(shinobi => shinobi.id === id) as Shinobi;
+      // })
+      this.formData = this.shinobiList.find(data => data.id === id) as Shinobi;
     }
+    console.log(this.formData)
     this.shinobiForm.setValue({
       id: this.formData.id,
       name: this.formData.name,
