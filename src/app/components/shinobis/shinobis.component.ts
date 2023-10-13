@@ -19,10 +19,10 @@ export class ShinobisComponent implements OnInit{
     
   }
 
-  //shinobiList!: Observable<Shinobi[]>;
-  shinobiList!: Shinobi[];
+  shinobiList!: Observable<Shinobi[]>;
+  // shinobiList!: Shinobi[];
   shinobiForm!: FormGroup;
-  formData!: Shinobi;
+  formData!: Observable<Shinobi>;
   deleteId!: number;
   isNoData: boolean = false;
 
@@ -40,6 +40,7 @@ export class ShinobisComponent implements OnInit{
     });
 
     
+    
   }
 
   get vName () { return this.shinobiForm.get('name') }
@@ -50,16 +51,21 @@ export class ShinobisComponent implements OnInit{
 
   onLoadGetShinobis(){
 
-    // this.shinobiList = this.shinobiService.GetShinobi();
-    this.shinobiService.GetShinobi().subscribe(
+    this.shinobiList = this.shinobiService.GetShinobi();
+
+    this.shinobiList.subscribe(
       (data) => {
-        this.shinobiList = data;
-        console.log(this.shinobiList)
+        if (data.length === 0) {
+          this.isNoData = true;
+        } else {
+          this.isNoData = false;
+        }
       },
       (error) => {
         this.isNoData = true;
       }
     );
+
   }
 
   onAddClick(){
@@ -74,44 +80,33 @@ export class ShinobisComponent implements OnInit{
 
   onEditClick(id: number){
     if(id){
-      // this.shinobiList.subscribe(shinobiData => {
-      //   this.formData = shinobiData.find(shinobi => shinobi.id === id) as Shinobi;
-      // })
-      this.formData = this.shinobiList.find(data => data.id === id) as Shinobi;
+      this.formData = this.shinobiService.GetShinobiById(id);
     }
-    console.log(this.formData)
-    this.shinobiForm.setValue({
-      id: this.formData.id,
-      name: this.formData.name,
-      age: this.formData.age,
-      rankLevel: this.formData.rankLevel,
-      village: this.formData.village
-    });
+
+    this.formData.subscribe((shinobi) => {
+      this.shinobiForm.setValue(shinobi);
+    })
     
     console.log(this.shinobiForm);
   }
 
   onSaveShinobi(shinobi: Shinobi){
     console.log(shinobi);
+
     if(shinobi.id == null || shinobi.id == 0){
       shinobi.id = 0;
-      this.formData = shinobi;
-      this.shinobiService.PostShinobi(this.formData).subscribe(
-        (res) => {
-          console.log(res);
-          this.onLoadGetShinobis();
-        }
-      );
-    }
-    else{
-      this.formData = shinobi;
-      this.shinobiService.UpdateShinobi(this.formData).subscribe(
-      (res) => {
+      this.shinobiService.PostShinobi(shinobi).subscribe((res) => {
         console.log(res);
         this.onLoadGetShinobis();
-      }
-    );
+      })
     }
+    else{
+      this.shinobiService.UpdateShinobi(shinobi).subscribe((res) => {
+        console.log();
+        this.onLoadGetShinobis();
+      })
+    }
+
   }
 
   onDeleteClick(id: number){
@@ -131,3 +126,4 @@ export class ShinobisComponent implements OnInit{
 
 
 }
+

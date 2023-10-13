@@ -24,6 +24,10 @@ export class ShinobiService {
     return this.http.get<Shinobi[]>('https://localhost:7239/api/Shinobis');
   }
 
+  GetShinobiById(id: number) : Observable<Shinobi> {
+    return this.http.get<Shinobi>(`https://localhost:7239/api/Shinobis/${id}`);
+  }
+
   PostShinobi(shinobi: Shinobi): Observable<Shinobi> {
     return this.http.post<Shinobi>('https://localhost:7239/api/Shinobis', shinobi);
   }

@@ -21,7 +21,7 @@
             <th>Village</th>
             <th>Actions</th>
         </tr>
-        <tr class="tr-data" *ngFor="let item of shinobiList">
+        <tr class="tr-data" *ngFor="let item of shinobiList | async">
             <td>
                 {{item.id}}
             </td>

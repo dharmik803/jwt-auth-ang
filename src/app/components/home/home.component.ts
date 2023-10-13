@@ -55,7 +55,6 @@ export class HomeComponent {
         }, 2000);
         setTimeout(() => {
           this.rt.navigate(['shinobi']);
-          
         }, 3000);
       },
       (error) => {
