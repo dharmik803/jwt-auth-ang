@@ -31,6 +31,7 @@ export class ShinobisComponent implements OnInit{
 
     this.onLoadGetShinobis();
 
+
     this.shinobiForm = this.fb.group({
       id: [null],
       name: ['', [Validators.required, Validators.pattern('^[A-Z][a-z]*( [A-Z][a-z]*)?$')]],
